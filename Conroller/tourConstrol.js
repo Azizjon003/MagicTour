@@ -22,11 +22,24 @@ const rewiewgetAll = async (req, res) => {
       .replace(/\bgte\b/g, '$gte');
     console.log(JSON.parse(query));
     let data = Tour.find(JSON.parse(query));
-
+    //sorting
+    if (req.query.field) {
+      const fieldData = req.query.field.split(',').join(' ');
+      data = data.select(fieldData);
+    } else data = data.select('-__v');
     if (req.query.sort) {
       const sortData = req.query.sort.split(',').join(' ');
       console.log(sortData);
       data = data.sort(sortData);
+    }
+    // pagination \
+    const page = req.query.page - 0 || 1;
+    const limit = req.query.limit - 0 || 3;
+    const skip = (page - 1) * limit;
+    data = data.skip(skip).limit(limit);
+    if (req.query.page) {
+      const numberOf = await Tour.countDocuments();
+      if (numberOf < skip) throw new Error('Bunaqa page yuq');
     }
     const queryData = await data;
 
@@ -40,7 +53,7 @@ const rewiewgetAll = async (req, res) => {
   } catch (er) {
     res.status(404).json({
       status: 'fail',
-      data: 'xato',
+      data: er.message,
     });
   }
 };
@@ -114,17 +127,3 @@ const deleteId = async (req, res) => {
 };
 
 module.exports = { rewiewgetAll, postTour, getIdTour, patchId, deleteId };
-
-
-
-
-
-
-
-
-
-
-
-
-
-

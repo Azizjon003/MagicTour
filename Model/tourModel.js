@@ -33,7 +33,7 @@ const TourSxema = new mongoose.Schema({
     type: Number,
     required: [true, 'Malumotlarni qushing'],
   },
-  summary: { 
+  summary: {
     type: String,
     required: [true, 'Malumotlarni qushing'],
     trim: true,
@@ -50,6 +50,7 @@ const TourSxema = new mongoose.Schema({
   images: [String],
   startDates: [Date],
   Create: {
+    select: false,
     type: Date,
     default: Date.now(),
   },
