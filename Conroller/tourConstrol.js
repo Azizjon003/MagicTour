@@ -112,4 +112,19 @@ const deleteId = async (req, res) => {
     });
   }
 };
+
 module.exports = { rewiewgetAll, postTour, getIdTour, patchId, deleteId };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
